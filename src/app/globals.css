@@ -1,0 +1,1587 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+html {
+  scroll-behavior: smooth;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+
+  /* ── NC design tokens — dark mode ──────────────────────── */
+  /* near-black warm backgrounds — éviter le noir pur */
+  --color-brand: #e0625a;
+  --color-text-primary: #f2edeb;     /* ~15:1 sur fond page */
+  --color-text-secondary: #a89e9b;   /* ~7:1  sur fond page */
+  --color-text-muted: #857a77;       /* ~4.5:1 — placeholders, hints */
+  --color-surface-page: #141211;     /* page bg — near-black chaud */
+  --color-surface-raised: #201d1b;   /* nav pills, inputs */
+  --color-surface-card: #2a2725;     /* dropdowns, modals, cards */
+  --color-border-default: #332e2b;   /* bordures subtiles */
+  --nc-nav-active-bg: rgba(255, 255, 255, 0.09);
+  --nc-nav-hover-bg: rgba(255, 255, 255, 0.05);
+  --nc-segmented-active-bg: rgba(255, 255, 255, 0.92);
+  --nc-segmented-active-text: #141211;
+  /* Boutons CTA sombres inversés en dark */
+  --nc-btn-dark-bg: #ede9e6;
+  --nc-btn-dark-text: #141211;
+  /* BottomNav pill — fond sombre translucide */
+  --nc-bottom-nav-bg: rgba(28, 25, 23, 0.88);
+  --nc-bottom-nav-border: rgba(55, 50, 47, 0.9);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-sf-pro-display);
+  --font-mono: var(--font-geist-mono);
+
+  /* Notion Club brand tokens (mockup — design system v1) */
+  --color-brand: #e0625a;
+  --color-text-primary: #000000;
+  --color-text-secondary: #52525b;
+  --color-text-muted: #64748b;
+  --color-surface-page: #f5f2f2;
+  --color-surface-raised: #f5f5f5;
+  --color-border-default: #e5e7eb;
+  --color-surface-card: #ffffff;     /* elevated surfaces (modals, dropdowns, cards) */
+}
+
+:root {
+  --nc-radius-xs: 12px;
+  --nc-radius-sm: 16px;
+  --nc-radius-md: 24px;
+  --nc-radius-xl: 100px;
+  --nc-radius-2xl: 9999px;
+  --nc-shadow-2: rgba(0, 0, 0, 0.03) 0 -2px 16px -4px,
+    rgba(0, 0, 0, 0.08) 0 16px 40px -8px, rgba(0, 0, 0, 0.04) 0 1px 3px 0;
+  --nc-shadow-3: rgba(0, 0, 0, 0.06) 0 4px 24px 0,
+    rgba(0, 0, 0, 0.04) 0 1px 2px 0;
+  --nc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --nc-duration-fast: 200ms;
+  --nc-duration-normal: 250ms;
+  --nc-duration-slow: 300ms;
+  --nc-nav-active-bg: rgba(0, 0, 0, 0.07);
+  --nc-nav-hover-bg: rgba(0, 0, 0, 0.04);
+  --nc-segmented-active-bg: #ffffff;
+  --nc-segmented-active-text: #000000;
+  /* Fond des tuiles posées sur une surface-card (tuiles d'appels, skeletons
+     d'aperçu) = fond de page. Via cette indirection, la valeur suit
+     automatiquement le thème (light/dark) sans override dédié. */
+  --nc-tile-bg: var(--color-surface-page);
+  /* Verre dépoli (bannière hero) — translucide + bord clair + reflet interne. */
+  --nc-glass-bg: rgba(255, 255, 255, 0.55);
+  --nc-glass-border: rgba(255, 255, 255, 0.65);
+  --nc-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  /* Boutons CTA sombres — s'inversent en dark mode */
+  --nc-btn-dark-bg: #1a1a1a;
+  --nc-btn-dark-text: #ffffff;
+  /* BottomNav pill */
+  --nc-bottom-nav-bg: rgba(255, 255, 255, 0.92);
+  --nc-bottom-nav-border: rgba(229, 231, 235, 0.9);
+  /* Dots pattern hover sur resource/template cards */
+  --nc-card-dot-color: rgba(224, 98, 90, 0.28);
+  /* Overlay de contenu verrouillé (FreeTeaserPanel) */
+  --nc-lock-overlay-bg: rgba(255, 255, 255, 0.72);
+  /* SwitchToggle — fond OFF */
+  --nc-switch-off-bg: rgba(0, 0, 0, 0.12);
+  /* Boutons désactivés */
+  --nc-btn-disabled-bg: #e5e7eb;
+  --nc-btn-disabled-text: #9ca3af;
+  /* Transitions de page */
+  --nc-duration-page: 240ms;
+  --nc-duration-page-exit: 160ms;
+  --nc-duration-morph: 370ms;
+  --nc-ease-out: cubic-bezier(0.4, 0, 1, 1);
+  --nc-ease-morph: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Chorégraphie de grille (useGridChoreography) — easings & durées.
+     Valeurs réglées à la main : ne pas « optimiser » sans validation. */
+  --ease-fluid: cubic-bezier(0.3, 0.78, 0.34, 1); /* reflow : décélération douce, sans départ sec */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1); /* fondus opacity / blur */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1); /* accélération de sortie */
+  --ease-back: cubic-bezier(0.34, 1.28, 0.64, 1); /* settle avec léger overshoot (entrée d'onglet) */
+  --reflow-dur: 470ms;
+  --enter-dur: 360ms;
+  --exit-dur: 240ms;
+  /* Tags communauté */
+  --nc-tag-general-bg: rgba(0, 0, 0, 0.06);
+  --nc-tag-general-text: var(--color-text-secondary);
+  --nc-tag-question-bg: rgba(59, 130, 246, 0.10);
+  --nc-tag-question-text: #1d4ed8;
+  --nc-tag-presentation-bg: rgba(34, 197, 94, 0.10);
+  --nc-tag-presentation-text: #15803d;
+  --nc-tag-annonce-bg: rgba(224, 98, 90, 0.12);
+  --nc-tag-annonce-text: #c0392b;
+  /* Badges de statut coaching */
+  --nc-status-upcoming-bg: #fef3f2;
+  --nc-status-upcoming-text: #e0625a;
+  --nc-status-accepted-bg: #dcfce7;
+  --nc-status-accepted-text: #166534;
+  --nc-status-noshown-bg: #fee2e2;
+  --nc-status-noshown-text: #991b1b;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Dark mode — overrides des classes utilitaires NC
+   ══════════════════════════════════════════════════════════ */
+
+/* Halo de page — supprimé en dark mode (fond uni warm near-black #141211) */
+.dark .nc-page-halo::before {
+  background: none;
+}
+
+/* Carte auth — fond sombre en dark mode */
+.dark .nc-shine-card__inner {
+  background: var(--color-surface-card);
+}
+
+/* Input NC en dark mode */
+.dark .nc-input {
+  background: var(--color-surface-raised);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-default);
+}
+.dark .nc-input::placeholder {
+  color: var(--color-text-muted);
+}
+.dark .nc-input:focus {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(224, 98, 90, 0.15);
+}
+
+/* ── Boutons flottants mobile (Bell, etc.) ── */
+.nc-mobile-action-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 0.5px solid rgba(229, 231, 235, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+.dark .nc-mobile-action-btn {
+  background: rgba(28, 25, 23, 0.88);
+  border-color: rgba(55, 50, 47, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.22);
+}
+
+/* ── Pill glissante nav (Topbar desktop + BottomNav mobile) ──
+   La transition est définie ici (CSS class) pour que le pattern "snap"
+   fonctionne : moveTo(false) sauvegarde pill.style.transition (""),
+   force transition:none, snaps, puis restaure "" → la class reprend.
+   moveTo(true) écrit juste transform+width et la class anime. */
+.nc-nav-pill {
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    width     220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-nav-pill { transition: none !important; }
+}
+
+/* ── Pill Topbar ── */
+.nc-topbar-pill {
+  background: var(--color-surface-card);
+  border: 0.5px solid var(--color-border-default);
+  border-radius: 9999px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.dark .nc-topbar-pill {
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 1px 4px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+/* ── Dropdown/popover panel ── */
+.nc-dropdown-panel {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-default);
+  box-shadow:
+    rgba(0, 0, 0, 0.03) 0px -2px 16px -4px,
+    rgba(0, 0, 0, 0.08) 0px 16px 40px -8px,
+    rgba(0, 0, 0, 0.04) 0px 1px 3px 0px;
+}
+.dark .nc-dropdown-panel {
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.32),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+}
+
+/* ── FAB "Nouveau post" mobile (feed communauté) ── */
+.nc-feed-fab {
+  position: fixed;
+  right: 20px;
+  /* au-dessus de la BottomNav (bottom:10 + height:56) + marge confort */
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 80px);
+  z-index: 45;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-brand);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    0 8px 24px -6px rgba(224, 98, 90, 0.55),
+    0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 180ms var(--nc-ease), box-shadow 180ms var(--nc-ease);
+}
+.nc-feed-fab:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 28px -6px rgba(224, 98, 90, 0.6),
+    0 3px 8px rgba(0, 0, 0, 0.14);
+}
+.nc-feed-fab:active {
+  transform: scale(0.94);
+}
+
+/* ── Compteur de ressources (chip lisible, intégré au design system) ── */
+.nc-resource-count {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-default);
+  border-radius: 9999px;
+  padding: 6px 12px;
+}
+/* Desktop : poussé à droite de la barre de filtres. Mobile : reste dans le
+   flux, inline après le bouton Filtres (plus de ligne orpheline en dessous). */
+@media (min-width: 768px) {
+  .nc-resource-count {
+    margin-left: auto;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ---------- Notion Club — auth mockup utilities ---------- */
+
+@property --nc-shine-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes nc-shine-rotate {
+  to {
+    --nc-shine-angle: 360deg;
+  }
+}
+
+@keyframes nc-btn-shine {
+  0% {
+    left: -50%;
+  }
+  60%,
+  100% {
+    left: 120%;
+  }
+}
+
+@keyframes nc-blink {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(224, 98, 90, 0.6);
+  }
+  50% {
+    opacity: 0.4;
+    box-shadow: 0 0 0 5px rgba(224, 98, 90, 0);
+  }
+}
+
+@keyframes nc-mode-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+ * Slot-machine vertical scroll animation pour les placeholders cyclants
+ * (cf. PlaceholderCycle dans ProfileHero.tsx). On translate une pile de 4
+ * items [msg1, msg2, msg3, msg1] de 0 → -25% → -50% → -75% sur un cycle
+ * de 9 s, easing cubic-bezier(0.76, 0, 0.24, 1) — chaque message reste
+ * ~2.4 s à l'écran, transition ~0.6 s entre eux. Le 4e item (duplicat de
+ * msg1) rend la boucle parfaitement seamless : visuellement, après -75%
+ * on revient à 0% sans aucun saut puisque les deux frames affichent
+ * msg1.
+ */
+@keyframes nc-placeholder-scroll {
+  0%,
+  27% {
+    transform: translateY(0%);
+  }
+  33%,
+  60% {
+    transform: translateY(-25%);
+  }
+  67%,
+  93% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(-75%);
+  }
+}
+
+.nc-placeholder-scroll {
+  animation: nc-placeholder-scroll 9s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+/*
+ * Animation de redimensionnement de la pill — STRICTEMENT synchronisée
+ * avec nc-placeholder-scroll : mêmes breakpoints %, même durée 9 s, même
+ * courbe d'easing. La largeur passe progressivement de --nc-pill-w-1 →
+ * --nc-pill-w-2 → --nc-pill-w-3 → --nc-pill-w-1 (loop) au rythme exact
+ * où le slot-machine affiche chaque placeholder, donc la pill épouse
+ * toujours le texte visible.
+ *
+ * Les 3 variables --nc-pill-w-N sont injectées en JS depuis
+ * EditableDisplayName, qui mesure la largeur réelle de chaque
+ * placeholder une fois la font chargée. Fallbacks raisonnables ici en
+ * cas de SSR / pas-encore-mesuré.
+ */
+@keyframes nc-pill-width-cycle {
+  0%,
+  27% {
+    width: var(--nc-pill-w-1, 320px);
+  }
+  33%,
+  60% {
+    width: var(--nc-pill-w-2, 360px);
+  }
+  67%,
+  93% {
+    width: var(--nc-pill-w-3, 340px);
+  }
+  100% {
+    width: var(--nc-pill-w-1, 320px);
+  }
+}
+
+.nc-pill-width-cycle {
+  animation: nc-pill-width-cycle 9s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nc-placeholder-scroll,
+  .nc-pill-width-cycle {
+    animation: none;
+  }
+  .nc-pill-width-cycle {
+    width: var(--nc-pill-w-1, 320px);
+  }
+}
+
+.nc-page-halo {
+  background-color: var(--color-surface-page);
+  position: relative;
+  isolation: isolate;
+  /*
+   * En PWA standalone avec `apple-mobile-web-app-status-bar-style:
+   * black-translucent`, le body s'étend jusqu'au bord supérieur du
+   * téléphone (env(safe-area-inset-top) vaut ~44px). Sans compensation,
+   * tout le contenu des pages remonte de 44px et passe sous l'heure
+   * iOS. On rajoute ce padding directement sur le halo : background-
+   * color étendu sur la zone (zéro seam), padding-top de chaque page
+   * (`pt-[96px]`, `pt-[148px]`, etc.) reste valide et se cumule par-
+   * dessus → les composants reprennent leur position d'origine.
+   * Hors standalone, env(safe-area-inset-top) = 0 → no-op.
+   */
+  padding-top: env(safe-area-inset-top);
+}
+
+.nc-page-halo::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(224, 99, 90, 0.28) 0%, transparent 35%),
+    radial-gradient(circle at 100% 0%, rgba(224, 99, 90, 0.24) 0%, transparent 34%),
+    radial-gradient(circle at 0% 100%, rgba(224, 99, 90, 0.22) 0%, transparent 34%),
+    radial-gradient(circle at 100% 100%, rgba(224, 99, 90, 0.26) 0%, transparent 35%),
+    radial-gradient(ellipse at 0% 50%, rgba(224, 99, 90, 0.12) 0%, transparent 20%),
+    radial-gradient(ellipse at 100% 50%, rgba(224, 99, 90, 0.12) 0%, transparent 20%);
+}
+
+.nc-shine-card {
+  --nc-shine-angle: 0deg;
+  position: relative;
+  border-radius: var(--nc-radius-md);
+  padding: 2px;
+  background: conic-gradient(
+    from var(--nc-shine-angle),
+    rgba(224, 98, 90, 0.08),
+    rgba(224, 98, 90, 0.85) 25%,
+    rgba(224, 98, 90, 0.08) 50%,
+    rgba(224, 98, 90, 0.08) 100%
+  );
+  animation: nc-shine-rotate 4s linear infinite;
+  box-shadow: var(--nc-shadow-2);
+}
+
+.nc-shine-card__inner {
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 32px;
+}
+
+.nc-btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nc-btn-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 80%
+  );
+  animation: nc-btn-shine 3.5s ease-in-out infinite;
+}
+
+.nc-blink-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-brand);
+  animation: nc-blink 1.4s ease-in-out infinite;
+}
+
+.nc-mode-in {
+  animation: nc-mode-in var(--nc-duration-normal) var(--nc-ease) both;
+}
+
+/* ── Dropdown (transitions.dev) — toolbox dev & menus ────────────────────── */
+:root {
+  --dropdown-open-dur: 250ms;
+  --dropdown-close-dur: 150ms;
+  --dropdown-pre-scale: 0.97;
+  --dropdown-closing-scale: 0.99;
+  --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.t-dropdown {
+  transform-origin: top left;
+  transform: scale(var(--dropdown-pre-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dropdown-open-dur) var(--dropdown-ease),
+    opacity var(--dropdown-open-dur) var(--dropdown-ease);
+  will-change: transform, opacity;
+}
+.t-dropdown[data-origin="top-right"] {
+  transform-origin: top right;
+}
+.t-dropdown[data-origin="top-center"] {
+  transform-origin: top center;
+}
+.t-dropdown[data-origin="bottom-left"] {
+  transform-origin: bottom left;
+}
+.t-dropdown[data-origin="bottom-center"] {
+  transform-origin: bottom center;
+}
+.t-dropdown[data-origin="bottom-right"] {
+  transform-origin: bottom right;
+}
+.t-dropdown.is-open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+.t-dropdown.is-closing {
+  transform: scale(var(--dropdown-closing-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dropdown-close-dur) var(--dropdown-ease),
+    opacity var(--dropdown-close-dur) var(--dropdown-ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .t-dropdown {
+    transition: none !important;
+  }
+}
+
+/* ── Page side-by-side (transitions.dev) — navigation interne du dropdown ── */
+:root {
+  --page-slide-dur: 200ms;
+  --page-fade-dur: 200ms;
+  --page-slide-distance: 8px;
+  --page-blur: 3px;
+  --page-stagger: 0ms;
+  --page-exit-enabled: 1;
+  --page-slide-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --page-fade-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.t-page-slide {
+  position: relative;
+}
+.t-page-slide .t-page[data-page-id="1"] {
+  --t-page-from-x: calc(var(--page-slide-distance) * -1);
+}
+.t-page-slide .t-page[data-page-id="2"] {
+  --t-page-from-x: var(--page-slide-distance);
+}
+.t-page-slide .t-page {
+  /* top/left/right seulement (pas `inset`) → hauteur naturelle mesurable. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(
+    calc(var(--t-page-from-x, 0px) * var(--page-exit-enabled))
+  );
+  filter: blur(calc(var(--page-blur) * var(--page-exit-enabled)));
+  transition:
+    opacity var(--page-fade-dur) var(--page-fade-ease),
+    transform var(--page-slide-dur) var(--page-slide-ease),
+    filter var(--page-slide-dur) var(--page-slide-ease);
+  will-change: opacity, transform, filter;
+}
+.t-page-slide[data-page="1"] .t-page[data-page-id="1"],
+.t-page-slide[data-page="2"] .t-page[data-page-id="2"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  filter: blur(0);
+  transition-delay: var(--page-stagger);
+}
+@media (prefers-reduced-motion: reduce) {
+  .t-page-slide .t-page {
+    transition: none !important;
+  }
+}
+
+/* Entrée en fondu flou — transition douce vers un bloc skeleton (états vides
+   « aucun appel à venir »). */
+@keyframes nc-blur-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.nc-blur-in {
+  animation: nc-blur-in 520ms var(--nc-ease) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-blur-in {
+    animation: none !important;
+  }
+}
+
+/* ── Open / close (transitions.dev) — sortie animée d'éléments de liste ──── */
+:root {
+  --modal-open-dur: 250ms;
+  --modal-close-dur: 150ms;
+  --modal-scale: 0.96;
+  --modal-scale-close: 0.96;
+  --modal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.t-modal {
+  transform-origin: center;
+  transform: scale(var(--modal-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--modal-open-dur) var(--modal-ease),
+    opacity var(--modal-open-dur) var(--modal-ease);
+  will-change: transform, opacity;
+}
+.t-modal.is-open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+.t-modal.is-closing {
+  transform: scale(var(--modal-scale-close));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--modal-close-dur) var(--modal-ease),
+    opacity var(--modal-close-dur) var(--modal-ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .t-modal {
+    transition: none !important;
+  }
+}
+
+/* ── Skeleton + reveal (transitions.dev) — avatar host pendant le chargement
+ * de la photo. Scopé sous .nc-avatar-skel (les classes t-skel-* sont aussi
+ * employées, autrement scopées, par le reveal de transcription). */
+.nc-avatar-skel {
+  --pulse-dur: 1000ms;
+  --pulse-count: infinite; /* pulse jusqu'au chargement de la photo */
+  --pulse-min: 0.5;
+  --reveal-dur: 400ms;
+  --reveal-blur: 2px;
+  --reveal-ease: ease-in-out;
+  position: relative;
+}
+.nc-avatar-skel .t-skel-skeleton,
+.nc-avatar-skel .t-skel-content {
+  position: absolute;
+  inset: 0;
+}
+.nc-avatar-skel .t-skel-skeleton {
+  z-index: 1;
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity var(--reveal-dur) var(--reveal-ease),
+    filter var(--reveal-dur) var(--reveal-ease);
+}
+.nc-avatar-skel .t-skel-content {
+  z-index: 2;
+  opacity: 0;
+  filter: blur(var(--reveal-blur));
+  transition:
+    opacity var(--reveal-dur) var(--reveal-ease),
+    filter var(--reveal-dur) var(--reveal-ease);
+}
+.nc-avatar-skel.is-revealed .t-skel-skeleton {
+  opacity: 0;
+  filter: blur(var(--reveal-blur));
+}
+.nc-avatar-skel.is-revealed .t-skel-content {
+  opacity: 1;
+  filter: blur(0);
+}
+.nc-avatar-skel .t-skel-skeleton.is-pulsing > * {
+  animation: t-skel-pulse var(--pulse-dur) ease-in-out var(--pulse-count);
+}
+@keyframes t-skel-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: var(--pulse-min);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-avatar-skel .t-skel-skeleton,
+  .nc-avatar-skel .t-skel-content {
+    transition: none !important;
+  }
+  .nc-avatar-skel .t-skel-skeleton.is-pulsing > * {
+    animation: none !important;
+  }
+}
+
+/* ── Texte de chargement animé (transcript) ──────────────────────────────
+ * Deux couches combinées sur le même <span> :
+ *   1. .t-text-swap — swap JS en 3 phases (sortie vers le haut + blur/fade,
+ *      changement de texte, entrée depuis le bas). Piloté par
+ *      TranscriptLoadingText (toggle de classes + reflow forcé).
+ *   2. .t-shimmer  — band rouge signature qui balaie les glyphes via
+ *      ::before + background-clip: text (CSS pur). data-text dupliqué par le
+ *      JS pour rester synchro avec le texte visible.
+ * Pattern repris de transitions.dev, recoloré sur les tokens NotionClub. */
+.t-text-swap {
+  display: inline-block;
+  transform: translateY(0);
+  filter: blur(0);
+  opacity: 1;
+  transition:
+    transform var(--text-swap-dur, 150ms) var(--text-swap-ease, ease-in-out),
+    filter var(--text-swap-dur, 150ms) var(--text-swap-ease, ease-in-out),
+    opacity var(--text-swap-dur, 150ms) var(--text-swap-ease, ease-in-out);
+  will-change: transform, filter, opacity;
+}
+.t-text-swap.is-exit {
+  transform: translateY(calc(var(--text-swap-translate-y, 4px) * -1));
+  filter: blur(var(--text-swap-blur, 2px));
+  opacity: 0;
+}
+.t-text-swap.is-enter-start {
+  transform: translateY(var(--text-swap-translate-y, 4px));
+  filter: blur(var(--text-swap-blur, 2px));
+  opacity: 0;
+  transition: none;
+}
+
+.t-shimmer {
+  position: relative;
+  display: inline-block;
+  color: var(--shimmer-base);
+}
+.t-shimmer::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 40%,
+    var(--shimmer-highlight) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: var(--shimmer-band, 400%) 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: t-shimmer var(--shimmer-dur, 2000ms) linear infinite;
+}
+@keyframes t-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+/* Shimmer gris réutilisable (sans typo imposée) — ex. libellé « Copie… ». */
+.nc-shimmer-text {
+  --shimmer-base: var(--color-text-muted);
+  --shimmer-highlight: var(--color-text-secondary);
+  --shimmer-dur: 1400ms;
+  --shimmer-band: 320%;
+}
+
+/* Instance concrète : variables + typo du texte de chargement transcript.
+ * Base = texte muet du DS, highlight = rouge signature. Light + dark via
+ * les tokens, rien en dur. */
+.nc-transcript-loading {
+  --text-swap-dur: 150ms;
+  --text-swap-translate-y: 5px;
+  --text-swap-blur: 2px;
+  --text-swap-ease: ease-in-out;
+  --shimmer-dur: 2000ms;
+  --shimmer-band: 400%;
+  --shimmer-base: var(--color-text-muted);
+  /* Highlight gris (plus prononcé que le base) : le band se voit sur le fond
+     clair de l'encadré. `text-secondary` ressort dans les deux thèmes
+     (plus sombre en light, plus clair en dark que le muted). */
+  --shimmer-highlight: var(--color-text-secondary);
+  /* Gros titre central pendant le chargement de la transcription. */
+  font-size: clamp(20px, 4vw, 26px);
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-text-swap {
+    transition: none !important;
+  }
+  .t-shimmer::before {
+    animation: none !important;
+  }
+}
+
+/* ── Skeleton + reveal de la transcription (transitions.dev) ──────────────
+ * Cross-fade skeleton → contenu réel quand la transcription arrive : le
+ * skeleton fond + se floute, le contenu apparaît + se dé-floute, sur la même
+ * durée pour lire comme un seul mouvement.
+ * Adaptation : contenu en flux (transcription de hauteur variable,
+ * scrollable). Le skeleton donne la hauteur pendant le chargement, puis
+ * bascule en overlay absolu au reveal pour laisser NotionBlocks piloter la
+ * hauteur. Classes transitions.dev conservées (`is-revealing`/`is-revealed`). */
+.nc-transcript-skel {
+  --reveal-dur: 420ms;
+  --reveal-blur: 3px;
+  --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+}
+.nc-transcript-skel .t-skel-skeleton {
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity var(--reveal-dur) var(--reveal-ease),
+    filter var(--reveal-dur) var(--reveal-ease);
+}
+.nc-transcript-skel.is-revealing .t-skel-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.nc-transcript-skel .t-skel-content {
+  opacity: 0;
+  filter: blur(var(--reveal-blur));
+  transition:
+    opacity var(--reveal-dur) var(--reveal-ease),
+    filter var(--reveal-dur) var(--reveal-ease);
+}
+.nc-transcript-skel.is-revealed .t-skel-skeleton {
+  opacity: 0;
+  filter: blur(var(--reveal-blur));
+}
+.nc-transcript-skel.is-revealed .t-skel-content {
+  opacity: 1;
+  filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-transcript-skel .t-skel-skeleton,
+  .nc-transcript-skel .t-skel-content {
+    transition: none !important;
+  }
+}
+
+/*
+ * Grid responsive pour la matrix NotificationsSection.
+ * Mobile (< md = 768 px) : colonnes channels compactes 56 px, gap 4 px
+ *   → la matrix tient inline sur les viewports ≥ 320 px.
+ * Desktop (≥ 768 px) : colonnes channels élargies à 96 px et gap 10 px
+ *   → le titre du type respire et les 3 boutons canaux sont mieux
+ *   distribués sur la ligne (plus de grand vide central).
+ */
+.nc-notif-grid {
+  grid-template-columns: minmax(0, 1fr) repeat(4, 52px);
+  gap: 3px;
+}
+
+@media (min-width: 768px) {
+  .nc-notif-grid {
+    grid-template-columns: minmax(0, 1fr) repeat(4, 88px);
+    gap: 8px;
+  }
+}
+
+@keyframes nc-sheet-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes nc-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.nc-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--nc-radius-xs);
+  font-size: 16px;
+  background: #ffffff;
+  color: var(--color-text-primary);
+  transition: border-color var(--nc-duration-fast) ease,
+    box-shadow var(--nc-duration-fast) ease;
+}
+
+.nc-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.nc-input:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(224, 98, 90, 0.12);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   View transitions (Next.js experimental.viewTransition)
+   ────────────────────────────────────────────────────────────── */
+
+/* Scénario C — morph shared element (cartes ressources/templates).
+   S'applique à tous les éléments nommés via view-transition-name. */
+::view-transition-group(*) {
+  animation-duration: var(--nc-duration-morph);
+  animation-timing-function: var(--nc-ease-morph);
+}
+
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: var(--nc-duration-morph);
+}
+
+/* Scénario A — cross-fade root (navigation entre sections).
+   Override du * ci-dessus grâce à la source order. */
+::view-transition-group(root) {
+  animation-duration: var(--nc-duration-page);
+  animation-timing-function: var(--nc-ease);
+}
+
+/* Root exit : fade accéléré (la page sortante part vite) */
+::view-transition-old(root) {
+  animation-duration: var(--nc-duration-page-exit);
+  animation-timing-function: var(--nc-ease-out);
+}
+
+/* Root enter : fade + scale léger (la page entrante s'installe) */
+::view-transition-new(root) {
+  animation-name: nc-page-enter;
+  animation-duration: var(--nc-duration-page);
+  animation-timing-function: var(--nc-ease);
+}
+
+@keyframes nc-page-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Scénario C (ressources/templates) — morph d'élément partagé
+
+   Posé via le composant React `<ViewTransition share="morph">`, qui assigne
+   la classe `morph` à la transition (carte grille ↔ encadré détail ↔ skeleton).
+   On règle la durée/easing du groupe et on ajoute un flou en milieu de course
+   (`via-blur`) pour masquer l'interpolation pixel et tuer le fantôme — c'est
+   l'approche recommandée par le guide Next « View transitions ».
+   ────────────────────────────────────────────────────────────── */
+::view-transition-group(.morph) {
+  animation-duration: var(--nc-duration-morph);
+  animation-timing-function: var(--nc-ease-morph);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: nc-vt-morph-blur;
+}
+@keyframes nc-vt-morph-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+
+/* Skeleton pulse — utilisé dans loading.tsx */
+@keyframes nc-skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+@keyframes nc-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empilement de cartes — navigation entre leçons (lesson-card).
+   La carte sortante s'enfonce dans le bas du "deck" pendant que la
+   nouvelle glisse par-dessus depuis le haut. */
+::view-transition-old(lesson-card) {
+  animation-name: nc-lesson-stack-exit;
+  animation-duration: 220ms;
+  animation-timing-function: var(--nc-ease-out);
+  transform-origin: center bottom;
+}
+
+::view-transition-new(lesson-card) {
+  animation-name: nc-lesson-stack-enter;
+  animation-duration: 340ms;
+  animation-timing-function: var(--nc-ease);
+  transform-origin: center top;
+}
+
+@keyframes nc-lesson-stack-exit {
+  from { opacity: 1; transform: scale(1)    translateY(0);    }
+  to   { opacity: 0; transform: scale(0.93) translateY(24px); }
+}
+
+@keyframes nc-lesson-stack-enter {
+  from { opacity: 0; transform: scale(0.97) translateY(-40px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);     }
+}
+
+
+/* Reduce motion : transitions instantanées */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* ---------- PWA / iOS standalone ---------- */
+/*
+ * Pas de surlignage bleu au tap sur iOS — l'app doit se comporter comme
+ * une application native une fois installée. `transparent` désactive le
+ * flash, l'effet `:active` reste contrôlé par chaque composant.
+ */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Note : l'ancien `.nc-statusbar-scrim` (dégradé sombre couvrant la
+ * zone status bar iOS en light + standalone) a été remplacé par un
+ * `GradualBlurOverlay anchor="top"` rendu côté layout root — frosted
+ * glass au lieu d'un voile sombre, plus cohérent avec le pattern de
+ * blur déjà utilisé en bas des pages Ressources et Communauté.
+ */
+
+/*
+ * Quand l'app est lancée depuis l'écran d'accueil (standalone), Safari
+ * coupe les contrôles de zoom. On désactive le `text-size-adjust`
+ * automatique pour que les tailles restent prévisibles dans ce mode.
+ */
+@media (display-mode: standalone) {
+  html,
+  body {
+    -webkit-user-select: none;
+    user-select: none;
+    overscroll-behavior-y: none;
+  }
+  /* Les inputs / textarea doivent rester sélectionnables et copiables. */
+  input,
+  textarea,
+  [contenteditable="true"] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   html.dark — specificity [0,1,1] reinforcement block
+   Garantit que les tokens NC dark gagnent sur toute règle :root
+   issue de @theme inline (Tailwind v4) ou d'autres imports.
+   Cette règle doit rester en DERNIER dans le fichier.
+   ══════════════════════════════════════════════════════════════ */
+html.dark {
+  --color-brand: #e0625a;
+  --color-text-primary: #f2edeb;
+  --color-text-secondary: #a89e9b;
+  --color-text-muted: #857a77;
+  --color-surface-page: #141211;
+  --color-surface-raised: #201d1b;
+  --color-surface-card: #2a2725;
+  --color-border-default: #332e2b;
+  --nc-nav-active-bg: rgba(255, 255, 255, 0.09);
+  --nc-nav-hover-bg: rgba(255, 255, 255, 0.05);
+  --nc-segmented-active-bg: rgba(255, 255, 255, 0.92);
+  --nc-segmented-active-text: #141211;
+  --nc-btn-dark-bg: #ede9e6;
+  --nc-btn-dark-text: #141211;
+  --nc-bottom-nav-bg: rgba(28, 25, 23, 0.88);
+  --nc-bottom-nav-border: rgba(55, 50, 47, 0.9);
+  --nc-card-dot-color: rgba(255, 255, 255, 0.18);
+  --nc-glass-bg: rgba(42, 39, 37, 0.55);
+  --nc-glass-border: rgba(255, 255, 255, 0.12);
+  --nc-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --nc-lock-overlay-bg: rgba(20, 18, 17, 0.87);
+  --nc-switch-off-bg: rgba(255, 255, 255, 0.14);
+  --nc-btn-disabled-bg: rgba(255, 255, 255, 0.08);
+  --nc-btn-disabled-text: rgba(255, 255, 255, 0.28);
+  --nc-tag-general-bg: rgba(255, 255, 255, 0.07);
+  --nc-tag-general-text: var(--color-text-secondary);
+  --nc-tag-question-bg: rgba(59, 130, 246, 0.12);
+  --nc-tag-question-text: #60a5fa;
+  --nc-tag-presentation-bg: rgba(34, 197, 94, 0.09);
+  --nc-tag-presentation-text: #4ade80;
+  --nc-tag-annonce-bg: rgba(224, 98, 90, 0.12);
+  --nc-tag-annonce-text: var(--color-brand);
+  --nc-status-upcoming-bg: rgba(224, 98, 90, 0.15);
+  --nc-status-upcoming-text: var(--color-brand);
+  --nc-status-accepted-bg: rgba(34, 197, 94, 0.12);
+  --nc-status-accepted-text: #4ade80;
+  --nc-status-noshown-bg: rgba(229, 62, 62, 0.12);
+  --nc-status-noshown-text: #f87171;
+}
+
+/* ---------- Formation — éditeur de notes (rich text contentEditable) ---------- */
+.nc-notes-editor a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.nc-notes-editor ul {
+  margin: 6px 0;
+  padding-left: 22px;
+  list-style: disc;
+}
+.nc-notes-editor img,
+.nc-notes-editor iframe {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 8px 0;
+}
+.nc-notes-editor:focus {
+  outline: none;
+}
+
+/* ---------- Formation — feedback popup : barre de fermeture auto (5s) ---------- */
+@keyframes nc-feedback-countdown {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+.nc-feedback-countdown {
+  animation: nc-feedback-countdown 2s linear forwards;
+}
+
+/* ---------- Formation — popup feedback : ouverture / fermeture premium ---------- */
+@keyframes nc-pop-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes nc-pop-overlay-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes nc-pop-card-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes nc-pop-card-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(8px) scale(0.97); }
+}
+.nc-pop-overlay {
+  animation: nc-pop-overlay-in 240ms var(--nc-ease) both;
+}
+.nc-pop-overlay[data-closing="true"] {
+  animation: nc-pop-overlay-out 200ms var(--nc-ease) both;
+}
+.nc-pop-card {
+  animation: nc-pop-card-in 300ms var(--nc-ease) both;
+}
+.nc-pop-card[data-closing="true"] {
+  animation: nc-pop-card-out 200ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-pop-overlay, .nc-pop-overlay[data-closing="true"],
+  .nc-pop-card, .nc-pop-card[data-closing="true"] {
+    animation-duration: 1ms;
+  }
+}
+
+/* ---------- Formation — transition leçon → leçon (carte intégrée) ---------- */
+/* La carte de transition prend la place du contenu (player-card) dans la
+   colonne, sans fond plein écran. Elle apparaît, héberge progression +
+   feedback, puis se dissout au-dessus du nouveau cours pour le révéler. */
+@keyframes nc-lt-card-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.nc-lt-card {
+  animation: nc-lt-card-in 300ms var(--nc-ease) both;
+}
+.nc-lt-layer[data-revealing="true"] .nc-lt-card {
+  animation: nc-lt-card-in 240ms var(--nc-ease) reverse both;
+}
+
+/* Scrim de contraste : assombrit + floute légèrement le skeleton derrière le
+   form pour le détacher (sinon ton sur ton). */
+.nc-lt-scrim {
+  background: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(4px) saturate(0.9);
+  -webkit-backdrop-filter: blur(4px) saturate(0.9);
+}
+html.dark .nc-lt-scrim {
+  background: rgba(0, 0, 0, 0.34);
+}
+
+/* Form de feedback en surimpression : fine bordure shimmer (conic-gradient
+   animé, 1 arc discret, lent) sur les coins extérieurs pour attirer l'œil sans
+   concurrencer la barre de progression. Réutilise --nc-shine-angle / nc-shine-rotate. */
+.nc-lt-form {
+  --nc-shine-angle: 0deg;
+  position: relative;
+  border-radius: 20px;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--nc-shine-angle),
+    rgba(224, 98, 90, 0) 0%,
+    rgba(224, 98, 90, 0.4) 12%,
+    rgba(224, 98, 90, 0) 30%,
+    rgba(224, 98, 90, 0) 100%
+  );
+  animation: nc-shine-rotate 5s linear infinite;
+  box-shadow: var(--nc-shadow-3);
+}
+.nc-lt-form__inner {
+  border-radius: 19px;
+  overflow: hidden;
+  background: var(--color-surface-card);
+}
+
+/* Apparition douce (croix de fermeture, etc.) */
+.nc-fade-in {
+  animation: nc-pop-overlay-in 260ms var(--nc-ease) both;
+}
+
+/* ---------- Fil d'Ariane file-tree — accordion (slide) + dropdown (fade) ---------- */
+/* Dépliage/repliage vertical fluide d'un module (Radix Accordion). */
+@keyframes nc-accordion-down {
+  from { height: 0; opacity: 0.4; }
+  to { height: var(--radix-accordion-content-height); opacity: 1; }
+}
+@keyframes nc-accordion-up {
+  from { height: var(--radix-accordion-content-height); opacity: 1; }
+  to { height: 0; opacity: 0.4; }
+}
+.nc-accordion-content[data-state="open"] {
+  animation: nc-accordion-down 240ms var(--nc-ease);
+}
+.nc-accordion-content[data-state="closed"] {
+  animation: nc-accordion-up 200ms var(--nc-ease);
+}
+
+/* Ouverture/fermeture du menu en fondu + léger glissement. */
+@keyframes nc-dropdown-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes nc-dropdown-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(-6px) scale(0.98); }
+}
+.nc-dropdown {
+  transform-origin: top left;
+  animation: nc-dropdown-in 180ms var(--nc-ease) both;
+}
+.nc-dropdown[data-closing="true"] {
+  animation: nc-dropdown-out 140ms var(--nc-ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nc-accordion-content[data-state="open"],
+  .nc-accordion-content[data-state="closed"],
+  .nc-dropdown,
+  .nc-dropdown[data-closing="true"] {
+    animation-duration: 1ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nc-lt-card,
+  .nc-lt-layer[data-revealing="true"] .nc-lt-card,
+  .nc-fade-in {
+    animation-duration: 1ms;
+  }
+  .nc-lt-form {
+    animation: none;
+  }
+}
+
+/* ---------- Formation — flèche ressource (sortie diagonale au hover) ---------- */
+.nc-resource-arrow {
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition: opacity 220ms var(--nc-ease), transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .nc-resource-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-resource-arrow {
+    transition-duration: 1ms;
+  }
+}
+
+/* ── Chorégraphie de grille — cartes animées par useGridChoreography ────── */
+/* La carte doit pouvoir être déplacée par transform sans artefact, et sa
+   visibilité est pilotée par le hook via `.is-hidden` (jamais par React). */
+.nc-grid-card {
+  will-change: transform;
+  backface-visibility: hidden;
+  height: 100%;
+}
+.nc-grid-card.is-hidden {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-grid-card {
+    transition: none !important;
+  }
+}
+
+/* ── transitions.dev #04 — Text states swap (search button Layer A) ─────── */
+:root {
+  --text-swap-dur: 150ms;
+  --text-swap-translate-y: 4px;
+  --text-swap-blur: 2px;
+  --text-swap-ease: ease-in-out;
+}
+
+/* ── transitions.dev #15 — Shimmer variables override for dark mode ─────── */
+/* White highlight so the sweep is visible over gray text in dark mode */
+.dark {
+  --shimmer-base: #a89e9b;
+  --shimmer-highlight: #ffffff;
+}
+
+/* Shimmer du placeholder « Que cherches-tu ? » : band plus large + cycle plus
+   long → balayages plus espacés, effet moins intense. */
+.nc-search-shimmer {
+  --shimmer-dur: 3400ms;
+  --shimmer-band: 800%;
+}
+
+/* ── transitions.dev #18 — Texts reveal (état « aucun résultat ») ───────────
+   Lignes empilées qui montent avec un léger flou en cascade. `.is-shown` joue
+   l'entrée ; chaque ligne suivante est retardée de --stagger-stagger. */
+:root {
+  --stagger-dur: 500ms;
+  --stagger-distance: 12px;
+  --stagger-stagger: 40ms;
+  --stagger-blur: 3px;
+  --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.t-stagger-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(var(--stagger-distance));
+  filter: blur(var(--stagger-blur));
+  transition:
+    opacity var(--stagger-dur) var(--stagger-ease),
+    transform var(--stagger-dur) var(--stagger-ease),
+    filter var(--stagger-dur) var(--stagger-ease);
+  will-change: transform, opacity, filter;
+}
+.t-stagger-line--2 {
+  transition-delay: var(--stagger-stagger);
+}
+.t-stagger-line--3 {
+  transition-delay: calc(var(--stagger-stagger) * 2);
+}
+.t-stagger.is-shown .t-stagger-line {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+/* Sortie découplée du stagger : même fondu pour chaque ligne, sans retour Y. */
+.t-stagger.is-hiding .t-stagger-line {
+  opacity: 0;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 200ms ease,
+    transform 0s linear,
+    filter 0s linear;
+  transition-delay: 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .t-stagger-line {
+    transition: none !important;
+  }
+}
+
+/* ── Search box — border treatments (couleur sous contrôle, sans lib) ──────
+   Idle : le breathe mono est fourni par <BorderBeam size="pulse-inner"
+   colorVariant="mono">. Aucun effet rouge sur l'état inactif.
+   Actif : faisceau « signature » rouge brand recréé en CSS (conic-gradient
+   rotatif via @property --nc-shine-angle), pour maîtriser la couleur que la
+   lib BorderBeam (palettes figées) ne permet pas. */
+.nc-search-beam {
+  position: relative;
+}
+/* Anneau rouge qui tourne — masque composite pour ne peindre que la bordure. */
+.nc-search-beam::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--nc-shine-angle),
+    rgba(224, 98, 90, 0.04),
+    rgba(224, 98, 90, 0.5) 22%,
+    rgba(224, 98, 90, 0.04) 48%,
+    rgba(224, 98, 90, 0.04) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: nc-shine-rotate 3s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+/* Halo rouge diffus — appuie la signature couleur. */
+.nc-search-beam::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 7px 0 rgba(224, 98, 90, 0.12);
+  pointer-events: none;
+  z-index: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-search-beam::before {
+    animation: none;
+  }
+}
+
+/* ── kbd badges inside the search button ───────────────────────────────── */
+/* Indice raccourci clavier (⌘/Ctrl + K) — inutile au tactile : masqué < md. */
+.nc-kbd-hint {
+  display: none;
+}
+@media (min-width: 768px) {
+  .nc-kbd-hint {
+    display: inline-flex;
+  }
+}
+
+.nc-kbd-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 3px 6px;
+  border-radius: 5px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.09);
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+.dark .nc-kbd-badge {
+  background: rgba(0,0,0,0.45);
+  border-color: rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.82);
+}
+
+/* Croix d'effacement de la recherche — reprend l'encadré des touches ⌘/Ctrl K
+   (cf. .nc-kbd-badge, posée conjointement). Ajoute juste curseur + survol. */
+.nc-search-clear {
+  cursor: pointer;
+}
+.nc-search-clear:hover {
+  background: rgba(0, 0, 0, 0.16);
+}
+.dark .nc-search-clear:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Groupe tabs + filtre : aligné à droite sur desktop (poussé par la recherche
+   fixe), aligné à gauche sur mobile (la barre passe à la ligne au-dessus). */
+.nc-tags-group {
+  margin-left: 0;
+}
+@media (min-width: 768px) {
+  .nc-tags-group {
+    margin-left: auto;
+  }
+}

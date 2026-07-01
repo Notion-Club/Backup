@@ -58,6 +58,7 @@ export default function RootLayout({
     <html
       lang="fr"
       className={`${sfProDisplay.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />

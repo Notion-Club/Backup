@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/shared/components/theme/ThemeProvider";
-import { SiteHeader } from "@/shared/components/marketing/SiteHeader";
-import { SiteFooter } from "@/shared/components/marketing/SiteFooter";
 import { sfProDisplay } from "@/shared/lib/fonts";
 import "./globals.css";
 
@@ -65,18 +63,9 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="min-h-full font-sans">
-        <ThemeProvider>
-          {/* nc-page-halo : fond de page + halo radial brand (cf. design
-              system Notion Club). Header sticky et footer vivent à l'intérieur. */}
-          <div
-            className="nc-page-halo flex flex-col"
-            style={{ minHeight: "100dvh" }}
-          >
-            <SiteHeader />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-          </div>
-        </ThemeProvider>
+        {/* Le fond nc-page-halo et le chrome (header/footer, shell d'app) sont
+            portés par les layouts de groupe : (marketing), (auth), (app). */}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

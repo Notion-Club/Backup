@@ -11,6 +11,7 @@ schéma, la RLS et la plomberie Vault. M2 les remplit (callback OAuth, UI, VPS).
 | `002_profiles_and_auth_trigger.sql`  | `profiles` + trigger `handle_new_user` + RLS                 |
 | `003_backups_schema.sql`             | `notion_connections`, `destinations`, `backup_configs`, `backup_runs` + index + RLS |
 | `004_vault_plumbing.sql`             | schéma privé `internal` + fonctions secrets (serveur only)   |
+| `005_notion_token_refresh.sql`       | `notion_connections` : `refresh_token_secret_id`, `token_expires_at` |
 
 ## Appliquer
 
@@ -70,3 +71,24 @@ reset role;
 2. Clés nouveau format : `sb_publishable_…` (client), `sb_secret_…` (serveur).
 3. Auth providers Email + Google activés (config Google → prérequis M2).
 4. Extension Vault active (par défaut sur Supabase Cloud).
+5. **M2b/M2c — exposer le schéma `internal` à la Data API**
+   (Project Settings → API → Exposed schemas → ajouter `internal`). Nécessaire
+   pour que le rôle serveur (`service_role`) appelle les fonctions Vault en RPC
+   (`internal.store_secret`, `read_secret`, `rotate_secret`, `delete_secret`).
+   L'`EXECUTE` reste réservé à `service_role` — `authenticated`/`anon` n'ont ni
+   USAGE sur le schéma ni EXECUTE sur les fonctions, donc exposer le schéma ne
+   leur donne aucun accès.
+6. **M2b** — appliquer la migration `005` (`supabase db push`), puis régénérer
+   `database.types.ts`.
+
+## Prérequis intégrations (M2b/M2c)
+
+- **Notion (M2b)** : intégration publique OAuth. `NOTION_OAUTH_CLIENT_ID/SECRET`,
+  et `NOTION_OAUTH_REDIRECT_URI` = `<origin>/api/oauth/notion/callback`
+  (identique au caractère près à l'URI enregistrée chez Notion).
+- **GitHub App (M2c)** : `GITHUB_APP_ID`, `GITHUB_APP_SLUG`,
+  `GITHUB_APP_PRIVATE_KEY` (PEM, `\n` échappés). **Setup URL** de l'App =
+  `<origin>/api/oauth/github/callback`. Permission repo « Contents: Read and write ».
+- **OAuth state** : `OAUTH_STATE_SECRET` (aléatoire long, ex. `openssl rand -hex 32`).
+
+Voir `.env.example` à la racine pour la liste complète.

@@ -49,6 +49,8 @@ export type Database = {
           workspace_icon: string | null;
           bot_id: string | null;
           access_token_secret_id: string | null;
+          refresh_token_secret_id: string | null;
+          token_expires_at: string | null;
           status: Database["public"]["Enums"]["connection_status"];
           created_at: string;
           updated_at: string;
@@ -61,6 +63,8 @@ export type Database = {
           workspace_icon?: string | null;
           bot_id?: string | null;
           access_token_secret_id?: string | null;
+          refresh_token_secret_id?: string | null;
+          token_expires_at?: string | null;
           status?: Database["public"]["Enums"]["connection_status"];
           created_at?: string;
           updated_at?: string;

@@ -31,6 +31,13 @@ export function SiteHeader() {
           <div className="hidden sm:inline-flex">
             <ThemeToggle />
           </div>
+          <Link
+            href="/login"
+            className="text-sm font-medium transition-colors hover:underline focus-visible:underline focus-visible:outline-none"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            Se connecter
+          </Link>
           <CtaButton href={CTA_CONNECT_HREF} className="h-10 px-4">
             Connecter Notion
           </CtaButton>
